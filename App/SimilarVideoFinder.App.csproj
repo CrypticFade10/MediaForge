@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>MediaForge</AssemblyName>
+    <Product>MediaForge</Product>
+    <Description>Modular Media Management Suite</Description>
+    <RootNamespace>SimilarVideoFinder.App</RootNamespace>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>embedded</DebugType>
+    <PublishTrimmed>false</PublishTrimmed>
+    <Version>3.1.0</Version>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Core/SimilarVideoFinder.Core.csproj" />
+    <ProjectReference Include="../Tooling/MediaForge.Tooling.csproj" />
+    <EmbeddedResource Include="../vendor/ffmpeg.exe" LogicalName="Tools.ffmpeg.exe" />
+    <EmbeddedResource Include="../vendor/ffprobe.exe" LogicalName="Tools.ffprobe.exe" />
+    <EmbeddedResource Include="../vendor/tool-checksums.json" LogicalName="Tools.checksums.json" />
+    <EmbeddedResource Include="../vendor/FFmpeg-LICENSE.txt" LogicalName="Notices.FFmpeg.txt" />
+    <EmbeddedResource Include="../THIRD-PARTY-NOTICES.txt" LogicalName="Notices.All.txt" />
+  </ItemGroup>
+</Project>

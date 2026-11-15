@@ -18,7 +18,7 @@ See [Adding tools](docs/ADDING-TOOLS.md) for the module contract and registratio
 
 ## GitHub builds
 
-The included GitHub Actions workflow builds and tests on Windows for pushes and pull requests, and stores the EXE as a downloadable build artifact. Pushing a version tag such as `v3.1.0` also creates a GitHub release with the single EXE and its SHA-256 checksum. The EXE is intentionally excluded from Git history because it exceeds GitHub's regular file-size limit.
+The included GitHub Actions workflow builds and tests on Windows for pushes and pull requests, and stores the EXE as a downloadable build artifact. Pushing a version tag such as `v3.1.0`, or including `[release]` in a push commit message, also creates a GitHub release with the single EXE and its SHA-256 checksum after all checks pass. For the commit-message route, the release tag comes from the version in the App project; increment that version before creating another release. The EXE is intentionally excluded from Git history because it exceeds GitHub's regular file-size limit.
 
 ## Duplicate Finder 3.0
 
@@ -51,7 +51,7 @@ A Windows x64 desktop app for large video libraries on local drives, USB drives 
 
 ## Using the app
 
-1. Launch `SimilarVideoFinder.exe`. The first launch extracts its bundled, checksum-verified FFmpeg tools into your local app-data folder.
+1. Launch `MediaForge.exe` and open Duplicate Finder. The first launch extracts its bundled, checksum-verified FFmpeg tools into your local app-data folder.
 2. Add folders, or paste a local/UNC path and press Enter. Subfolders are included by default. Optionally add **protected reference folders**: these are scanned too, but their files are never selected or deleted. When references are configured, only other files with a direct reference match can be deleted.
 3. Choose searches and click **Start scan**. Name searches are inexpensive. Complete hashing and video fingerprinting read media from your drives; one read worker is the default for NAS use.
 4. Review the collapsible groups. Select a file row and use **Compare evidence**, **Open video** or **Open folder**. Comparison uses colour previews with zoom and shows audio/subtitle tracks, languages, channels, bit depth, HDR and bitrate when available. Sorts are numeric for size, duration, score and resolution; grouped sorting keeps each group together. Switch **Group results** off for a flat table. Filter by search type or path.
@@ -91,14 +91,14 @@ No media is uploaded and no server/account is required. FFmpeg helper processes 
 
 ## Building and testing
 
-Run `powershell -ExecutionPolicy Bypass -File .\build.ps1` from the project folder. The script downloads a checksum-verified .NET SDK into `build-tools`, obtains the pinned FFmpeg binaries if missing, runs the regression harness and publishes `dist\SimilarVideoFinder.exe`. It needs network access for initial dependencies; end users need no downloads or preinstalled runtime. `-SkipTests` only skips the regression harness.
+Run `powershell -ExecutionPolicy Bypass -File .\build.ps1` from the project folder. The script downloads a checksum-verified .NET SDK into `build-tools`, obtains the pinned FFmpeg binaries if missing, runs the regression harness and publishes `dist\MediaForge.exe`. It needs network access for initial dependencies; end users need no downloads or preinstalled runtime. `-SkipTests` only skips the regression harness.
 
 The source is split into Core (inventory, matching, SQLite, export, guarded deletion), App (WPF and bundled tools) and Tests (generated/disposable fixtures). Dependency notices and the FFmpeg licence are embedded in **About / help**.
 
 For a noninteractive rendered GUI smoke test:
 
 ```powershell
-.\dist\SimilarVideoFinder.exe --smoke --data-dir .\artifacts\smoke-cache --output-dir .\artifacts\smoke --smoke-library <fixture-folder> --smoke-count 100000
+.\dist\MediaForge.exe --smoke --data-dir .\artifacts\smoke-cache --output-dir .\artifacts\smoke --smoke-library <fixture-folder> --smoke-count 100000
 ```
 
 This mode renders both light/dark themes offscreen, exercises synthetic selection/reference/group cleanup and history/theme switches, exports diagnostics/screenshots, and exits nonzero if acceptance checks fail. It performs no media deletion. Use a fresh disposable `--data-dir` because the acceptance test checks default-off history, then tests opting in and out. The regression harness deletes/recycles only the disposable fixtures it creates under `artifacts`.

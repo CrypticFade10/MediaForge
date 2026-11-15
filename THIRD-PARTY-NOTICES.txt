@@ -1,0 +1,31 @@
+MediaForge - Modular Media Management Suite
+
+Application source: MIT licence (see LICENSE in the source project).
+
+Microsoft .NET 10 and Windows Desktop runtime
+Copyright Microsoft and .NET contributors. MIT licence.
+https://github.com/dotnet/runtime/blob/main/LICENSE.TXT
+https://github.com/dotnet/wpf/blob/main/LICENSE.TXT
+
+Microsoft.Data.Sqlite / SQLitePCLRaw
+Microsoft.Data.Sqlite: Copyright Microsoft, MIT licence.
+https://github.com/dotnet/efcore/blob/main/LICENSE.txt
+SQLitePCLRaw: Copyright Eric Sink and contributors, Apache License 2.0.
+https://github.com/ericsink/SQLitePCL.raw/blob/master/LICENSE.TXT
+SQLite: public domain. https://sqlite.org/copyright.html
+
+FFmpeg and FFprobe 9.0.2 essentials build, by Gyan Doshi
+Copyright FFmpeg developers and contributing library authors.
+These are separate executables launched as subprocesses, not linked into the application.
+The included build is GPL version 3. The complete GPL text is embedded in this application.
+Build information, library list and third-party source references:
+https://www.gyan.dev/ffmpeg/builds/
+Corresponding FFmpeg source for the included release:
+https://github.com/FFmpeg/FFmpeg/tree/946fcce07b
+https://github.com/FFmpeg/FFmpeg/archive/946fcce07b.tar.gz
+Original binary distribution (with its build documentation and licence):
+https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip
+https://ffmpeg.org/legal.html
+
+Bundled binaries may be extracted from the application cache/tools folder.
+The application does not download software or upload media at runtime.

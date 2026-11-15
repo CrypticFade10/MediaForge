@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="App/SimilarVideoFinder.App.csproj" />
+  <Project Path="Core/SimilarVideoFinder.Core.csproj" />
+  <Project Path="Tests/SimilarVideoFinder.Tests.csproj" />
+  <Project Path="Tooling/MediaForge.Tooling.csproj" />
+</Solution>

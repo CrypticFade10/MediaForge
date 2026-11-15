@@ -1,0 +1,14 @@
+build-tools/
+vendor/*.exe
+vendor/tool-checksums.json
+**/bin/
+**/obj/
+artifacts/
+dist/
+*.lnk
+.vs/
+*.user
+*.suo
+*_wpftmp.csproj
+*.sqlite*
+*.log
