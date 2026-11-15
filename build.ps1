@@ -44,6 +44,8 @@ if (-not $SkipTests) {
     if ($LASTEXITCODE -ne 0) { throw 'Regression tests failed.' }
     & $dotnet run --project (Join-Path $projectRoot 'Tests\SimilarVideoFinder.Tests.csproj') --no-build -- $projectRoot --v3
     if ($LASTEXITCODE -ne 0) { throw 'V3 feature tests failed.' }
+    & $dotnet run --project (Join-Path $projectRoot 'Tests\SimilarVideoFinder.Tests.csproj') --no-build -- $projectRoot --integrity
+    if ($LASTEXITCODE -ne 0) { throw 'Integrity checker tests failed.' }
 }
 # Build PE intermediates with a neutral suffix to avoid executable locking while
 # native host resources are updated. Only the final Windows EXE is distributed.

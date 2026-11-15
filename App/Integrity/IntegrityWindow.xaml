@@ -1,0 +1,62 @@
+<Window x:Class="SimilarVideoFinder.App.Integrity.IntegrityWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ Title="Media Integrity Checker — MediaForge" Width="1280" Height="880" MinWidth="1020" MinHeight="740" WindowStartupLocation="CenterScreen" Background="{DynamicResource WindowBackground}">
+ <Grid Background="{DynamicResource WindowBackground}">
+  <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="170"/></Grid.RowDefinitions>
+  <Border Background="{DynamicResource HeaderBackground}" Padding="24,18">
+   <StackPanel>
+    <TextBlock Text="MEDIAFORGE / MEDIA HEALTH" Foreground="{DynamicResource HeaderMuted}" FontSize="11"/>
+    <TextBlock Text="Media Integrity Checker" Foreground="{DynamicResource HeaderForeground}" FontSize="28" FontWeight="SemiBold" Margin="0,4,0,6"/>
+    <TextBlock Text="Check every video and audio stream. Your media files are read only; no converted copies are created." Foreground="{DynamicResource HeaderMuted}"/>
+   </StackPanel>
+  </Border>
+  <Grid x:Name="OptionsPanel" Grid.Row="1" Margin="24,16,24,10">
+   <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+   <StackPanel Margin="0,0,20,0">
+    <TextBlock Text="Folders to check — subfolders are included" FontWeight="SemiBold"/>
+    <DockPanel Margin="0,8,0,8"><Button DockPanel.Dock="Right" Content="Add folder…" Click="Browse_Click" Margin="8,0,0,0"/><Button DockPanel.Dock="Right" Content="Add path" Click="AddPath_Click" Margin="8,0,0,0"/><TextBox x:Name="FolderPathBox" ToolTip="Paste a local or network folder path" KeyDown="Path_KeyDown"/></DockPanel>
+    <ListBox x:Name="FolderList" Height="78"/>
+    <Button Content="Remove selected folder" Click="Remove_Click" HorizontalAlignment="Left" Margin="0,8,0,0" Padding="9,4"/>
+   </StackPanel>
+   <StackPanel Grid.Column="1">
+    <Grid>
+     <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+     <StackPanel Margin="0,0,12,0"><TextBlock Text="Check"/><ComboBox x:Name="ModeBox" SelectedIndex="0" Margin="0,6,0,10"><ComboBoxItem Content="Full decode (recommended)"/><ComboBoxItem Content="Quick container inspection"/></ComboBox></StackPanel>
+     <StackPanel Grid.Column="1"><TextBlock Text="Video decoder"/><ComboBox x:Name="DecoderBox" SelectedIndex="0" Margin="0,6,0,10"><ComboBoxItem Content="CPU (default)"/><ComboBoxItem Content="GPU — retry on CPU if needed"/></ComboBox></StackPanel>
+    </Grid>
+    <StackPanel Orientation="Horizontal" Margin="0,0,0,10"><TextBlock Text="Parallel files" VerticalAlignment="Center"/><ComboBox x:Name="WorkersBox" Width="60" Margin="8,0,18,0" SelectedIndex="0"><ComboBoxItem Content="1"/><ComboBoxItem Content="2"/><ComboBoxItem Content="3"/><ComboBoxItem Content="4"/></ComboBox><TextBlock Text="Stall timeout (seconds)" VerticalAlignment="Center"/><TextBox x:Name="TimeoutBox" Text="120" Width="65" Margin="8,0,0,0"/></StackPanel>
+    <TextBlock Text="Media extensions (separate with semicolons)"/><TextBox x:Name="ExtensionsBox" Margin="0,6,0,0"/>
+    <TextBlock Text="GPU uses Windows D3D11VA. Quick inspection does not decode. Subtitles and attachments are excluded." TextWrapping="Wrap" Foreground="{DynamicResource MutedBrush}" FontSize="11" Margin="0,8,0,0"/>
+   </StackPanel>
+  </Grid>
+  <StackPanel Grid.Row="2" Margin="24,0,24,10">
+   <DockPanel>
+    <Button x:Name="StartButton" DockPanel.Dock="Left" Content="Start check" IsEnabled="False" Click="Start_Click"/>
+    <Button x:Name="CancelButton" DockPanel.Dock="Left" Content="Cancel" IsEnabled="False" Click="Cancel_Click"/>
+    <Button x:Name="ExportButton" DockPanel.Dock="Right" Content="Export report…" IsEnabled="False" Click="Export_Click" Margin="8,0,0,0"/>
+    <ComboBox x:Name="FilterBox" DockPanel.Dock="Right" Width="210" SelectedIndex="0" SelectionChanged="Filter_Changed"><ComboBoxItem Content="Issues and incomplete checks"/><ComboBoxItem Content="All results"/><ComboBoxItem Content="Media errors only"/><ComboBoxItem Content="Warnings only"/><ComboBoxItem Content="Passed only"/></ComboBox>
+    <TextBlock x:Name="CountText" VerticalAlignment="Center" Margin="12,0" Foreground="{DynamicResource MutedBrush}"/>
+   </DockPanel>
+   <TextBlock x:Name="ProgressText" Text="Preparing bundled video tools…" Margin="0,10,0,4" TextTrimming="CharacterEllipsis"/>
+   <ProgressBar x:Name="FileProgress" Height="5" Minimum="0" Maximum="100"/>
+   <TextBlock x:Name="SummaryText" Text="Results stay in memory until you explicitly export a report." Margin="0,6,0,0" Foreground="{DynamicResource MutedBrush}" TextWrapping="Wrap"/>
+  </StackPanel>
+  <DataGrid x:Name="ResultsGrid" Grid.Row="3" Margin="24,0,24,10" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" EnableRowVirtualization="True" EnableColumnVirtualization="True" SelectionMode="Single" SelectionChanged="Result_Changed" HeadersVisibility="Column" GridLinesVisibility="Horizontal" BorderBrush="{DynamicResource BorderBrush}" RowHeight="32">
+   <DataGrid.Columns>
+    <DataGridTextColumn Header="Status" Binding="{Binding StatusText}" Width="130"/>
+    <DataGridTextColumn Header="File" Binding="{Binding FileName}" Width="210"/>
+    <DataGridTextColumn Header="Decoder" Binding="{Binding Decoder}" Width="135"/>
+    <DataGridCheckBoxColumn Header="CPU retry" Binding="{Binding CpuRetry}" Width="70"/>
+    <DataGridTextColumn Header="Check" Binding="{Binding CheckText}" Width="115"/>
+    <DataGridTextColumn Header="Seconds" Binding="{Binding ElapsedSeconds, StringFormat=F1}" Width="75"/>
+    <DataGridTextColumn Header="Full path" Binding="{Binding Path}" Width="*"/>
+   </DataGrid.Columns>
+  </DataGrid>
+  <Grid Grid.Row="4" Margin="24,0,24,18">
+   <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+   <DockPanel Margin="0,0,0,7"><Button DockPanel.Dock="Right" Content="Open containing folder" Click="OpenFolder_Click" Padding="10,4" Margin="0"/><TextBlock Text="Selected result and decoder diagnostics" FontWeight="SemiBold" VerticalAlignment="Center"/></DockPanel>
+   <TextBox x:Name="DiagnosticsBox" Grid.Row="1" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+  </Grid>
+ </Grid>
+</Window>

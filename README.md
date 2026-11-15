@@ -2,13 +2,15 @@
 
 **Modular Media Management Suite**
 
-Distributed as **one standalone EXE**. Duplicate Finder is the first tool; future tools can be added without changing the launcher.
+Distributed as **one standalone EXE**. Includes Duplicate Finder and Media Integrity Checker; future tools can be added without changing the launcher.
 
 Open `dist/MediaForge.exe` on 64-bit Windows. The home screen lists installed tools and supports search and a shared light/dark theme. Open tools run in their own windows in the same application. Opening a tool again activates its existing window; closing it lets you reopen a fresh session. Close tool windows before exiting the launcher so ongoing file operations retain their existing close safeguards.
 
 The EXE includes the .NET runtime, SQLite, FFmpeg and FFprobe. No installation, companion DLLs or plugin folder is needed. Native tools are extracted locally when Duplicate Finder opens.
 
 ## Build and extend
+
+See [Media Integrity Checker](docs/MEDIA-INTEGRITY.md) for recursive media health checks, optional GPU decoding, CPU retries, result statuses and report exports.
 
 Run `./build.ps1` in PowerShell on Windows. It downloads the pinned SDK and video tools when needed, checks their hashes, runs both regression suites and publishes `dist/MediaForge.exe`. Build dependencies and generated files are excluded from source control.
 

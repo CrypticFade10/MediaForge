@@ -20,7 +20,7 @@ public sealed class MediaInspectorModule : IToolModule
 }
 ```
 
-The example describes an extension point; Media Inspector is not bundled yet.
+The example describes an extension point; Media Inspector is not bundled yet. The existing `Integrity/MediaForge.Integrity.csproj` provides an example of a separate tool engine, connected to the host by `App/Modules/IntegrityCheckerModule.cs` and `App/Integrity/IntegrityWindow.xaml`.
 
 Register the new module in `App/Modules/BuiltInTools.cs`. Run `./build.ps1` to validate and republish. The launcher displays registered modules automatically and supports searching their names, descriptions and categories. Module IDs must be unique, case-insensitively, and contain only ASCII letters, digits and hyphens.
 

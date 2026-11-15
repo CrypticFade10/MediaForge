@@ -1,3 +1,20 @@
+# MediaForge 3.2 validation - 15 November 2026
+
+Added Media Integrity Checker as the second registered module, with an independent Integrity engine project and shared bundled FFmpeg tools.
+
+- Existing Duplicate Finder regression suite: 126 passed; two junction fixture checks unavailable in this managed environment.
+- Existing V3 feature suite: 26 passed.
+- Integrity engine suite: 30 passed, including real Unicode video/audio/multiple-track/truncated/malformed fixtures, source preservation, GPU-or-CPU fallback, deterministic GPU confirmation/retry and error classification, cancellation, helper watchdog termination and CSV/JSON reports.
+- Standalone suite/UI smoke: 18 passed, including opening both modules, an actual integrity scan, result filtering, diagnostics and report export.
+- Published EXE ran from a directory containing only the EXE with an invalid installed-runtime root. Light/dark Integrity Checker screenshots visually inspected.
+- Source files are not changed by the checker; reports are session-only until explicitly exported. GPU speed improvements and performance across different physical GPUs have not been benchmarked. Live NAS disconnection behavior remains unverified.
+- Publish succeeded with zero compiler errors. Local NuGet vulnerability-feed checks emitted NU1900 warnings because api.nuget.org was unreachable; no dependency-audit completion is claimed here.
+- Local EXE SHA-256: 2bbbf6e072b555be91d00d8a285a0f5510e98f00b385a6694fd9e24b5a1d120b
+- Evidence: artifacts/integrity-release.log, artifacts/integrity-final-build.log and artifacts/integrity-suite-verified/suite-smoke.json, with theme renders alongside the smoke report.
+
+Earlier releases follow as historical context. GitHub build and release results are recorded separately in Actions.
+
+---
 # MediaForge 3.1 validation - 15 November 2026
 
 MediaForge - Modular Media Management Suite. First tool: Duplicate Finder 3.0.

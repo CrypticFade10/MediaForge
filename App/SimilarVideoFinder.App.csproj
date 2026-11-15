@@ -14,12 +14,13 @@
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
     <DebugType>embedded</DebugType>
     <PublishTrimmed>false</PublishTrimmed>
-    <Version>3.1.0</Version>
+    <Version>3.2.0</Version>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../Core/SimilarVideoFinder.Core.csproj" />
     <ProjectReference Include="../Tooling/MediaForge.Tooling.csproj" />
+    <ProjectReference Include="../Integrity/MediaForge.Integrity.csproj" />
     <EmbeddedResource Include="../vendor/ffmpeg.exe" LogicalName="Tools.ffmpeg.exe" />
     <EmbeddedResource Include="../vendor/ffprobe.exe" LogicalName="Tools.ffprobe.exe" />
     <EmbeddedResource Include="../vendor/tool-checksums.json" LogicalName="Tools.checksums.json" />

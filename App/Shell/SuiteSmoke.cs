@@ -38,7 +38,7 @@ internal static class SuiteSmoke
         try
         {
             await shell.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);
-            Check(registry.Modules.Count == 1 && registry.Find("DUPLICATE-FINDER") != null, "Built-in registration and case-insensitive lookup");
+            Check(registry.Modules.Count == 2 && registry.Find("DUPLICATE-FINDER") != null && registry.Find("media-integrity") != null, "Built-in registration and case-insensitive lookup");
             foreach (string id in new[] { "", "../escape", "with space" })
             {
                 bool rejected = false;
@@ -66,6 +66,22 @@ internal static class SuiteSmoke
                 using var file = File.Create(Path.Combine(App.DataDirectory, dark ? "suite-dark.png" : "suite-light.png")); encoder.Save(file);
             }
             ThemeManager.Apply(App.DarkMode);
+            var checker = shell.OpenTool("media-integrity");
+            Check(ReferenceEquals(checker, shell.OpenTool("MEDIA-INTEGRITY")), "Integrity Checker reuses its open window");
+            var checkerStart = (Button)checker.FindName("StartButton");
+            for (int i = 0; i < 150 && !checkerStart.IsEnabled; i++) await Task.Delay(200);
+            Check(checkerStart.IsEnabled, "Integrity Checker initialises bundled tools");
+            Check(await ((Integrity.IntegrityWindow)checker).RunSmokeAsync(), "Integrity Checker scans, filters, shows diagnostics and exports results through the UI");
+            foreach (bool dark in new[] { false, true })
+            {
+                ThemeManager.Apply(dark); checker.UpdateLayout();
+                var content = (FrameworkElement)checker.Content;
+                var image = new RenderTargetBitmap((int)content.ActualWidth, (int)content.ActualHeight, 96, 96, PixelFormats.Pbgra32); image.Render(content);
+                var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(image));
+                using var file = File.Create(Path.Combine(App.DataDirectory, dark ? "integrity-dark.png" : "integrity-light.png")); encoder.Save(file);
+            }
+            ThemeManager.Apply(App.DarkMode);
+            checker.Close();
             var window = shell.OpenTool("duplicate-finder");
             Check(ReferenceEquals(window, shell.OpenTool("DUPLICATE-FINDER")), "Opening a running tool reuses its window");
             window.WindowState = WindowState.Minimized;

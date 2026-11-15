@@ -77,6 +77,7 @@ public partial class SuiteWindow : Window
 
     private void OnClosing(object? sender, CancelEventArgs e)
     {
+        if (arguments.Contains("--suite-smoke")) return;
         // Never bypass a module's scan/deletion close safeguards through owner shutdown.
         if (openTools.Count == 0) return;
         e.Cancel = true;
