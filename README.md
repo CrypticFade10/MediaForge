@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/mediaforge.png" alt="MediaForge icon" width="160" /></p>
+
 # MediaForge
 
 **Modular Media Management Suite**

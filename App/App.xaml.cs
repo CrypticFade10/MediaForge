@@ -34,6 +34,7 @@ public partial class App : Application
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException) { SaveHistory = false; DarkMode = false; }
         ThemeManager.Apply(DarkMode);
+        Branding.Apply();
         DispatcherUnhandledException += (_, ex) =>
         {
             if (SaveHistory) try { File.AppendAllText(Path.Combine(DataDirectory, "errors.log"), DateTime.UtcNow.ToString("O") + " " + ex.Exception + Environment.NewLine); } catch (IOException) { } catch (UnauthorizedAccessException) { }

@@ -2,6 +2,9 @@
 param([switch]$SkipTests)
 $ErrorActionPreference = 'Stop'
 $projectRoot = $PSScriptRoot
+if (Test-Path -LiteralPath (Join-Path $projectRoot 'assets\mediaforge.png')) {
+    & (Join-Path $projectRoot 'assets\Build-Icon.ps1')
+}
 $buildTools = Join-Path $projectRoot 'build-tools'
 $sdkDirectory = Join-Path $buildTools 'dotnet'
 $vendorDirectory = Join-Path $projectRoot 'vendor'

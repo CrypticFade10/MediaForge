@@ -14,10 +14,12 @@
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
     <DebugType>embedded</DebugType>
     <PublishTrimmed>false</PublishTrimmed>
-    <Version>3.2.0</Version>
+    <Version>3.2.1</Version>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon Condition="Exists('../assets/mediaforge.ico')">../assets/mediaforge.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="../assets/mediaforge.png" LogicalName="Branding.MediaForge.png" Condition="Exists('../assets/mediaforge.png')" />
     <ProjectReference Include="../Core/SimilarVideoFinder.Core.csproj" />
     <ProjectReference Include="../Tooling/MediaForge.Tooling.csproj" />
     <ProjectReference Include="../Integrity/MediaForge.Integrity.csproj" />
