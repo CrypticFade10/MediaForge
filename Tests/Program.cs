@@ -103,7 +103,7 @@ internal static partial class Program
             Check(files.Count == 4, "Overlapping roots are deduplicated and non-video extensions ignored");
             var shallow = OnlyNames(inventory); shallow.Recursive = false;
             Check(FileInventory.Enumerate(shallow, cache, _ => { }, _ => { }, CancellationToken.None).Count == 1, "Non-recursive selection");
-            string unicode = Path.Combine(sub, "??? O.mkv"); File.WriteAllBytes(unicode, contents);
+            string unicode = Path.Combine(sub, "日本語 Ω.mkv"); File.WriteAllBytes(unicode, contents);
             Check(FileInventory.Enumerate(OnlyNames(inventory), cache, _ => { }, _ => { }, CancellationToken.None).Count == 5, "Unicode paths");
             string longDirectory = sub;
             for (int i = 0; i < 8; i++) longDirectory = Path.Combine(longDirectory, new string((char)('a' + i), 35));

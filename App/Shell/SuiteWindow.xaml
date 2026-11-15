@@ -21,7 +21,7 @@
    <TextBlock Text="Choose a tool" FontSize="22" FontWeight="SemiBold"/>
    <Grid Grid.Row="1" Margin="0,16,0,18">
     <TextBox x:Name="SearchBox" TextChanged="Search_Changed" ToolTip="Search tools by name, description or category" AutomationProperties.Name="Search tools"/>
-    <TextBlock Text="Search tools." Margin="8,0" VerticalAlignment="Center" IsHitTestVisible="False" Foreground="{DynamicResource MutedBrush}">
+    <TextBlock Text="Search tools…" Margin="8,0" VerticalAlignment="Center" IsHitTestVisible="False" Foreground="{DynamicResource MutedBrush}">
      <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value=""><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
     </TextBlock>
    </Grid>

@@ -117,7 +117,7 @@ public sealed class CacheStore : IDisposable
             cmd.CommandText = "SELECT id,started,state FROM scans ORDER BY id DESC LIMIT 30";
             using var reader = cmd.ExecuteReader();
             var history = new List<(long, string)>();
-            while (reader.Read()) history.Add((reader.GetInt64(0), $"Scan {reader.GetInt64(0)} � {DateTime.Parse(reader.GetString(1)).ToLocalTime():g} � {reader.GetString(2)}"));
+            while (reader.Read()) history.Add((reader.GetInt64(0), $"Scan {reader.GetInt64(0)} · {DateTime.Parse(reader.GetString(1)).ToLocalTime():g} · {reader.GetString(2)}"));
             return history;
         }
     }

@@ -170,7 +170,7 @@ public sealed class ScanEngine(CacheStore cache, MediaProcessor media)
         report.Errors = errors.ToList();
         if (omittedErrors > 0) report.Errors.Add($"{omittedErrors} additional issues omitted. Scan smaller folder selections to inspect them.");
         if (report.ScanId != 0) cache.FinishScan(report);
-        Update(new(report.Status switch { ScanStatus.Cancelled => "Scan cancelled - completed work retained", ScanStatus.Failed => "Scan failed - see Issues", _ => "Scan complete" }, report.FileCount, report.FileCount));
+        Update(new(report.Status switch { ScanStatus.Cancelled => "Scan cancelled — completed work retained", ScanStatus.Failed => "Scan failed — see Issues", _ => "Scan complete" }, report.FileCount, report.FileCount));
         return report;
     }
 }

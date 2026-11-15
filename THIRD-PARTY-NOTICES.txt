@@ -1,4 +1,4 @@
-MediaForge - Modular Media Management Suite
+MediaForge — Modular Media Management Suite
 
 Application source: MIT licence (see LICENSE in the source project).
 

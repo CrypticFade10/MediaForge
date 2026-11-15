@@ -11,7 +11,7 @@ public static class FilenameMatcher
     private static readonly Regex Technical = new(@"\b(?:sdtv|hdtv|pdtv|dsr|dvdrip|dvd|bluray|blu[ ._-]?ray|bdrip|brrip|web[ ._-]?dl|webrip|remux|xvid|divx|[xh][ ._-]?26[45]|hevc|avc|av1|vp9|aac|mp3|ac3|eac3|ddp|dts(?:[ ._-]?hd)?|truehd|flac|opus|pcm|10bit|8bit|hdr10|hdr|dolby[ ._-]?vision|2160p|1080[pi]|720p|576[pi]|480[pi]|4k|uhd)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
     private static readonly Regex Year = new(@"\b(?:19|20)\d{2}\b", RegexOptions.Compiled);
     private static readonly Regex Words = new(@"[\p{L}\p{Nd}]+", RegexOptions.Compiled);
-    private static readonly Regex Editions = new(@"\b(?:director['']?s[ ._-]+cut|extended(?:[ ._-]+cut)?|theatrical(?:[ ._-]+cut)?|unrated|uncut|final[ ._-]+cut|special[ ._-]+edition|remastered)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private static readonly Regex Editions = new(@"\b(?:director['’]?s[ ._-]+cut|extended(?:[ ._-]+cut)?|theatrical(?:[ ._-]+cut)?|unrated|uncut|final[ ._-]+cut|special[ ._-]+edition|remastered)\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     public static ParsedName Parse(string filename)
     {
@@ -24,7 +24,7 @@ public static class FilenameMatcher
             text = Regex.Replace(text, @"\b(?:proper|repack)\b", " ");
             text = Regex.Replace(text, @"\b(?:2[ .]0|5[ .]1|7[ .]1)\b", " ");
         }
-        string edition = string.Join('|', Editions.Matches(text).Select(m => Normalise(m.Value.Replace("'", "").Replace("'", ""))).Distinct().Order(StringComparer.Ordinal));
+        string edition = string.Join('|', Editions.Matches(text).Select(m => Normalise(m.Value.Replace("'", "").Replace("’", ""))).Distinct().Order(StringComparer.Ordinal));
         string? episode = null;
         var episodeMatch = Episodes.Match(text);
         var title = episodeMatch.Success ? text[..episodeMatch.Index] : text;

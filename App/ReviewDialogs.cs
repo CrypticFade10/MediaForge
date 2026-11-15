@@ -22,7 +22,7 @@ public sealed class ConfirmationWindow : Window
         grid.RowDefinitions.Add(new() { Height = GridLength.Auto });
         var heading = new StackPanel();
         heading.Children.Add(new TextBlock { Text = quarantine ? "Move verified copies to quarantine?" : allPermanent ? "Permanently delete these files?" : "Review before deleting", FontSize = 25, FontWeight = FontWeights.SemiBold });
-        heading.Children.Add(new TextBlock { Text = $"{files.Count:N0} files � {Formatting.Size(files.Sum(f => f.Size))}", Margin = new(0, 8, 0, 8) });
+        heading.Children.Add(new TextBlock { Text = $"{files.Count:N0} files · {Formatting.Size(files.Sum(f => f.Size))}", Margin = new(0, 8, 0, 8) });
         heading.Children.Add(new TextBlock { Text = networkFiles > 0 ? $"{networkFiles:N0} network file(s) will be deleted permanently, without a Recycle Bin attempt. This cannot be undone by the app." +
             (networkFiles < files.Count ? " Local files will be recycled where supported; any local permanent fallback requires another confirmation." : "") : permanent ? "These files cannot be recycled. This action cannot be undone by the app."
             : "Local files will be sent to the Windows Recycle Bin. Files that cannot be recycled require another confirmation.", TextWrapping = TextWrapping.Wrap,
@@ -31,8 +31,8 @@ public sealed class ConfirmationWindow : Window
         ThemeManager.Bind(heading.Children[2] as FrameworkElement ?? heading, TextBlock.ForegroundProperty, typedConfirmation ? "WarningBrush" : "MutedBrush");
         if (discardFiles > 0) heading.Children.Add(new TextBlock { Text = $"{discardFiles} file(s) explicitly marked for whole-group discard. No surviving copy is required.", TextWrapping = TextWrapping.Wrap, FontWeight = FontWeights.Bold });
         if (quarantine) ((TextBlock)heading.Children[2]).Text = "Files are copied and SHA-256 verified before the originals are removed. Each copy has a restoration manifest. Cancellation takes effect between files.";
-        var list = new ListBox { ItemsSource = files.Select(f => f.Path + (!quarantine && DeletionPolicy.IsNetworkPath(f.Path) ? " � NETWORK - permanent deletion" : "") + "\n" + Formatting.Size(f.Size) +
-            (f.IsReference ? " � PROTECTED REFERENCE" : "") + "\n" + (f.Media?.Description ?? "Media tracks not inspected yet; use Compare evidence before deciding.") + "\n" + (review?.GetValueOrDefault(f.Path) ?? "")), FontSize = 12 };
+        var list = new ListBox { ItemsSource = files.Select(f => f.Path + (!quarantine && DeletionPolicy.IsNetworkPath(f.Path) ? " · NETWORK - permanent deletion" : "") + "\n" + Formatting.Size(f.Size) +
+            (f.IsReference ? " · PROTECTED REFERENCE" : "") + "\n" + (f.Media?.Description ?? "Media tracks not inspected yet; use Compare evidence before deciding.") + "\n" + (review?.GetValueOrDefault(f.Path) ?? "")), FontSize = 12 };
         ScrollViewer.SetHorizontalScrollBarVisibility(list, ScrollBarVisibility.Auto); Grid.SetRow(list, 1); grid.Children.Add(list);
         var entry = new TextBox { Margin = new(0, 10, 0, 10), ToolTip = "Type DELETE to enable permanent deletion" };
         if (typedConfirmation)
@@ -137,7 +137,7 @@ public sealed class EvidenceWindow : Window
         Grid.SetRow(pairScroll, 1); grid.Children.Add(pairScroll);
         var positions = new StackPanel { Orientation = Orientation.Horizontal, Margin = new(0, 12, 0, 10) };
         positions.Children.Add(new TextBlock { Text = "Sample position", VerticalAlignment = VerticalAlignment.Center, Margin = new(0, 0, 12, 0) });
-        var combo = new ComboBox { ItemsSource = Enumerable.Range(0, 12).Select(i => $"Frame {i + 1} � {MediaProcessor.Position(i):P0}"), Width = 180, SelectedIndex = 0 };
+        var combo = new ComboBox { ItemsSource = Enumerable.Range(0, 12).Select(i => $"Frame {i + 1} · {MediaProcessor.Position(i):P0}"), Width = 180, SelectedIndex = 0 };
         combo.SelectionChanged += async (_, _) => await LoadFrames(combo.SelectedIndex); positions.Children.Add(combo); Grid.SetRow(positions, 2); grid.Children.Add(positions);
         positions.Children.Add(new TextBlock { Text = "Zoom", Margin = new(20, 0, 8, 0), VerticalAlignment = VerticalAlignment.Center });
         var zoom = new Slider { Minimum = 1, Maximum = 3, Value = 1, Width = 150, VerticalAlignment = VerticalAlignment.Center };
@@ -159,7 +159,7 @@ public sealed class EvidenceWindow : Window
         frameRequest?.Cancel();
         using var pending = CancellationTokenSource.CreateLinkedTokenSource(cancellation.Token); frameRequest = pending;
         var token = pending.Token;
-        int id = ++request; status.Text = "Reading colour comparison frames.";
+        int id = ++request; status.Text = "Reading colour comparison frames…";
         try
         {
             var result = await Task.Run(async () =>
@@ -178,7 +178,7 @@ public sealed class EvidenceWindow : Window
             left.Source = ImageFrom(result.a); right.Source = ImageFrom(result.b);
             leftDetails.Text = Details(reference); rightDetails.Text = Details(candidate);
             string distance = index >= 0 && evidence.FrameDistances is { Count: 12 } distances ? $"Fingerprint distance: {distances[index]}/64. " : "";
-            status.Text = $"Position {position:P1} � {distance}Review colour, detail, audio and subtitle tracks before choosing a copy.";
+            status.Text = $"Position {position:P1} · {distance}Review colour, detail, audio and subtitle tracks before choosing a copy.";
         }
         catch (OperationCanceledException) { }
         catch (Exception ex) { if (id == request) status.Text = ex.Message; }
@@ -190,6 +190,6 @@ public sealed class EvidenceWindow : Window
         var image = new BitmapImage(); image.BeginInit(); image.CacheOption = BitmapCacheOption.OnLoad; image.StreamSource = stream; image.EndInit(); image.Freeze(); return image;
     }
     private static string Details(FileRecord file) => file.Media is { } m
-        ? $"{Formatting.Size(file.Size)} � {Formatting.Duration(m.Duration)}\n{m.Description}"
+        ? $"{Formatting.Size(file.Size)} · {Formatting.Duration(m.Duration)}\n{m.Description}"
         : Formatting.Size(file.Size);
 }

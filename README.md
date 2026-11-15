@@ -77,7 +77,7 @@ No files are selected for deletion automatically. Selecting a path in one search
 
 All searches are independently selectable. Filename/content searches can compare across selected folders; the episode-in-folder search is strictly folder-local. Multi-episode files match equivalent episode sets, not individual episodes from that set. Edited versions, partial overlaps and audio-only similarity are outside this version's visual-matching scope. Static/very dark videos may have insufficient informative frames.
 
-**Advanced settings:** editable extensions, filename threshold (default 90%), frame distance (default 10; lower is stricter), read workers (1-4), and Force rescan. Force rescan ignores completed cached work for that scan. Different encodes may contain different audio/subtitle tracks even when their video looks the same.
+**Advanced settings:** editable extensions, filename threshold (default 90%), frame distance (default 10; lower is stricter), read workers (1–4), and Force rescan. Force rescan ignores completed cached work for that scan. Different encodes may contain different audio/subtitle tracks even when their video looks the same.
 
 ## Cache, recovery and history
 

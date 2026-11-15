@@ -41,9 +41,9 @@
         <StackPanel Margin="0,12,0,0">
          <TextBlock Text="Video extensions"/><TextBox x:Name="ExtensionsBox" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="60" Margin="0,5,0,10"/>
          <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="62"/></Grid.ColumnDefinitions><TextBlock Text="Name similarity (%)" VerticalAlignment="Center"/><TextBox x:Name="NameThresholdBox" Grid.Column="1" Text="90"/></Grid>
-         <Grid Margin="0,9,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="62"/></Grid.ColumnDefinitions><TextBlock Text="Visual distance (1-20)" VerticalAlignment="Center"/><TextBox x:Name="FrameDistanceBox" Grid.Column="1" Text="10"/></Grid>
+         <Grid Margin="0,9,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="62"/></Grid.ColumnDefinitions><TextBlock Text="Visual distance (1–20)" VerticalAlignment="Center"/><TextBox x:Name="FrameDistanceBox" Grid.Column="1" Text="10"/></Grid>
          <TextBlock Text="Lower distance = stricter video matching" FontSize="11" Foreground="{DynamicResource MutedBrush}" Margin="0,4,0,9"/>
-         <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="62"/></Grid.ColumnDefinitions><TextBlock Text="Read workers (1-4)" VerticalAlignment="Center"/><TextBox x:Name="WorkersBox" Grid.Column="1" Text="1"/></Grid>
+         <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="62"/></Grid.ColumnDefinitions><TextBlock Text="Read workers (1–4)" VerticalAlignment="Center"/><TextBox x:Name="WorkersBox" Grid.Column="1" Text="1"/></Grid>
          <TextBlock Text="One worker is recommended for NAS drives" FontSize="11" Foreground="{DynamicResource MutedBrush}" Margin="0,4,0,4"/>
          <CheckBox x:Name="ForceBox" Content="Force rescan (ignore cached work)"/>
         </StackPanel>
@@ -67,7 +67,7 @@
        <Grid Margin="0,0,0,10"><Grid.ColumnDefinitions><ColumnDefinition Width="200"/><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
         <ComboBox x:Name="KindFilter" SelectedIndex="0" SelectionChanged="Filter_Changed" Padding="6" Margin="0,0,10,0"><ComboBoxItem Content="All search types"/><ComboBoxItem Content="Identical filename"/><ComboBoxItem Content="Identical contents"/><ComboBoxItem Content="Similar filename"/><ComboBoxItem Content="Video content"/><ComboBoxItem Content="Same episode in folder"/></ComboBox>
         <Grid Grid.Column="1"><TextBox x:Name="TextFilter" TextChanged="Filter_Changed" ToolTip="Filter by filename or full path"/>
-         <TextBlock Text="Filter by filename or path." Margin="9,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource MutedBrush}" IsHitTestVisible="False">
+         <TextBlock Text="Filter by filename or path…" Margin="9,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource MutedBrush}" IsHitTestVisible="False">
           <TextBlock.Style><Style TargetType="TextBlock"><Setter Property="Visibility" Value="Collapsed"/><Style.Triggers><DataTrigger Binding="{Binding Text, ElementName=TextFilter}" Value=""><Setter Property="Visibility" Value="Visible"/></DataTrigger></Style.Triggers></Style></TextBlock.Style>
          </TextBlock>
         </Grid>
@@ -122,15 +122,15 @@
      <WrapPanel x:Name="ReviewActions"><Button Content="Compare evidence" Click="Compare_Click"/><Button Content="Open video" Click="Open_Click"/><Button Content="Open folder" Click="OpenFolder_Click"/><Button Content="Clear selection" Click="ClearSelection_Click"/><Button Content="Delete whole group" Click="WholeGroup_Click"/><Button Content="Quarantine selected" Click="Quarantine_Click"/><Button Content="Restore quarantine" Click="Restore_Click"/><Button Content="Scan / keep preferences" Click="ReviewPreferences_Click"/><Button Content="Manage cache" Click="CacheManage_Click"/></WrapPanel>
      <Grid Margin="0,12,0,0"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
       <TextBlock x:Name="SelectionText" Text="0 files selected for deletion" VerticalAlignment="Center" Foreground="{DynamicResource MutedBrush}"/>
-      <Button x:Name="DeleteButton" Grid.Column="1" Content="Review deletion." Click="Delete_Click" Background="{DynamicResource WarningSurface}" BorderBrush="{DynamicResource BorderBrush}" Foreground="{DynamicResource WarningBrush}" IsEnabled="False" Margin="0"/>
+      <Button x:Name="DeleteButton" Grid.Column="1" Content="Review deletion…" Click="Delete_Click" Background="{DynamicResource WarningSurface}" BorderBrush="{DynamicResource BorderBrush}" Foreground="{DynamicResource WarningBrush}" IsEnabled="False" Margin="0"/>
      </Grid>
     </StackPanel>
    </Grid>
   </Grid>
   <Border Grid.Row="2" Background="{DynamicResource Surface}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Padding="24,13">
    <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="260"/></Grid.ColumnDefinitions>
-    <StackPanel><TextBlock x:Name="StatusText" Text="Preparing bundled video tools." FontWeight="SemiBold"/><TextBlock x:Name="DetailText" Text="History is off by default. Your videos stay on your drives." Foreground="{DynamicResource MutedBrush}" FontSize="11" Margin="0,5,12,0" TextTrimming="CharacterEllipsis"/></StackPanel>
-    <StackPanel Grid.Column="1" VerticalAlignment="Center"><ProgressBar x:Name="ScanProgressBar" Height="7" Foreground="{DynamicResource AccentBrush}" Background="{DynamicResource SurfaceAlt}" BorderThickness="0"/><TextBlock x:Name="ProgressText" Text="Local processing � no uploads" TextWrapping="Wrap" HorizontalAlignment="Right" Foreground="{DynamicResource MutedBrush}" FontSize="10" Margin="0,6,0,0"/></StackPanel>
+    <StackPanel><TextBlock x:Name="StatusText" Text="Preparing bundled video tools…" FontWeight="SemiBold"/><TextBlock x:Name="DetailText" Text="History is off by default. Your videos stay on your drives." Foreground="{DynamicResource MutedBrush}" FontSize="11" Margin="0,5,12,0" TextTrimming="CharacterEllipsis"/></StackPanel>
+    <StackPanel Grid.Column="1" VerticalAlignment="Center"><ProgressBar x:Name="ScanProgressBar" Height="7" Foreground="{DynamicResource AccentBrush}" Background="{DynamicResource SurfaceAlt}" BorderThickness="0"/><TextBlock x:Name="ProgressText" Text="Local processing · no uploads" TextWrapping="Wrap" HorizontalAlignment="Right" Foreground="{DynamicResource MutedBrush}" FontSize="10" Margin="0,6,0,0"/></StackPanel>
    </Grid>
   </Border>
  </Grid>

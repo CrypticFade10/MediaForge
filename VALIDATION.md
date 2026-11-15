@@ -36,7 +36,7 @@ Live NAS disconnection, mapped-drive/UNC alias behavior and slow filesystem call
 Earlier validation below is historical and does not describe the current executable.
 
 ---
-# Release 2.0 validation - 9 October 2026
+# Release 2.0 validation — 9 October 2026
 
 Release: `dist/SimilarVideoFinder.exe`, Windows x64, version 2.0.0.0, 143,344,752 bytes.
 
@@ -65,7 +65,7 @@ The release build completed without warnings. The workspace shortcut now targets
 
 Actual NAS throughput, live share disconnections and mapped-drive behaviour against a real share remain unverified. Network deletion was exercised through an injected backend and synthetic GUI review. This environment could not recycle the disposable native test file; the test verified that unavailable recycling leaves it intact pending explicit permanent-deletion consent. Permanent deletion tests used disposable files only. No user media was scanned or deleted. GUI checks used in-process controls and WPF renders, not external desktop automation.
 
-# Release 1.1 validation - 8 October 2026
+# Release 1.1 validation — 8 October 2026
 
 Release: `dist/SimilarVideoFinder.exe`, Windows x64, 143,317,247 bytes.
 
@@ -79,7 +79,7 @@ Large-selection validation now uses indexed path membership; selected and retain
 
 The original full-suite results below remain the baseline for unchanged matching and scanning behavior; that complete suite was not rerun for this update.
 
-# Release 1.0 validation - 8 October 2026
+# Release 1.0 validation — 8 October 2026
 
 Release: `dist/SimilarVideoFinder.exe`, Windows x64, 143,311,190 bytes.
 

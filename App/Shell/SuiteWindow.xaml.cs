@@ -67,7 +67,7 @@ public partial class SuiteWindow : Window
         RefreshStatus();
     }
 
-    private void RefreshStatus() => StatusText.Text = $"{registry.Modules.Count} tool(s) available � {openTools.Count} open";
+    private void RefreshStatus() => StatusText.Text = $"{registry.Modules.Count} tool(s) available · {openTools.Count} open";
 
     private void DarkMode_Click(object sender, RoutedEventArgs e)
     {

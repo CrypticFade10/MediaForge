@@ -33,7 +33,7 @@ public sealed class ScanOptions
         if (!IdenticalFilename && !IdenticalContents && !SimilarFilename && !VideoContent && !EpisodeInFolder)
             throw new ArgumentException("Choose at least one search.");
         if (NameThreshold is < 50 or > 100 || FrameDistance is < 1 or > 20 || Workers is < 1 or > 4)
-            throw new ArgumentException("Check the advanced settings: name threshold 50-100, visual distance 1-20, workers 1-4.");
+            throw new ArgumentException("Check the advanced settings: name threshold 50–100, visual distance 1–20, workers 1–4.");
         if (string.IsNullOrWhiteSpace(Extensions)) throw new ArgumentException("Enter at least one video extension.");
         if (MinimumSizeBytes < 0 || !double.IsFinite(MinimumDurationSeconds) || MinimumDurationSeconds < 0) throw new ArgumentException("Minimum size and duration must be non-negative.");
     }
@@ -67,12 +67,12 @@ public sealed record MediaInfo(double Duration, int Width, int Height, string Vi
     public string DynamicRange { get; init; } = "Unknown";
     public long Bitrate { get; init; }
     public string PixelFormat { get; init; } = "";
-    [JsonIgnore] public string Description => $"{Width} � {Height} � {VideoCodec} � {BitDepth switch { > 0 => $"{BitDepth}-bit", _ => "bit depth unknown" }} � {DynamicRange}" +
-        (Bitrate > 0 ? $" � {Bitrate / 1_000_000d:0.##} Mb/s" : "") +
+    [JsonIgnore] public string Description => $"{Width} × {Height} · {VideoCodec} · {BitDepth switch { > 0 => $"{BitDepth}-bit", _ => "bit depth unknown" }} · {DynamicRange}" +
+        (Bitrate > 0 ? $" · {Bitrate / 1_000_000d:0.##} Mb/s" : "") +
         "\nAudio: " + (AudioTracks.Count == 0 ? AudioCodec : string.Join("; ", AudioTracks.Select(DescribeTrack))) +
         "\nSubtitles: " + (SubtitleTracks.Count == 0 ? "none" : string.Join("; ", SubtitleTracks.Select(DescribeTrack)));
     private static string DescribeTrack(MediaTrack t) => $"{t.Codec} [{t.Language}]" + (t.Channels > 0 ? $" {t.Channels} channels" : "") +
-        (string.IsNullOrWhiteSpace(t.Title) ? "" : $" ({t.Title})") + (t.Default ? " � default" : "");
+        (string.IsNullOrWhiteSpace(t.Title) ? "" : $" ({t.Title})") + (t.Default ? " · default" : "");
 }
 public sealed record FrameFingerprint(int Index, ulong Hash, bool Informative);
 public sealed record MatchEvidence(double Score, string Reason, List<int>? FrameDistances = null);
@@ -86,13 +86,13 @@ public sealed class MatchGroup
     [JsonIgnore] public FileRecord Representative => Members[0].File;
     [JsonIgnore] public string Label => Kind switch
     {
-        MatchKind.IdenticalFilename => "Identical filename � candidate",
-        MatchKind.IdenticalContents => "Identical contents � SHA-256",
-        MatchKind.SimilarFilename => "Similar filename � candidate",
-        MatchKind.EpisodeInFolder => "Same episode in folder � candidate",
-        _ => "Video content � candidate"
+        MatchKind.IdenticalFilename => "Identical filename · candidate",
+        MatchKind.IdenticalContents => "Identical contents · SHA-256",
+        MatchKind.SimilarFilename => "Similar filename · candidate",
+        MatchKind.EpisodeInFolder => "Same episode in folder · candidate",
+        _ => "Video content · candidate"
     };
-    [JsonIgnore] public string Summary => $"{Id} � {Label} � {Members.Count:N0} files � {Formatting.Size(Members.Sum(m => m.File.Size))}";
+    [JsonIgnore] public string Summary => $"{Id} · {Label} · {Members.Count:N0} files · {Formatting.Size(Members.Sum(m => m.File.Size))}";
 }
 
 public sealed record ScanProgress(string Stage, int Completed, int Total, long BytesRead = 0, string Detail = "", double ElapsedSeconds = 0, int CacheHits = 0, double? RemainingSeconds = null);
@@ -118,7 +118,7 @@ public sealed class ResultRow : INotifyPropertyChanged
     public bool IsGroupHeader { get; init; }
     private bool collapsed;
     public bool Collapsed { get => collapsed; set { collapsed = value; Changed(); Changed(nameof(HeaderGlyph)); } }
-    public string HeaderGlyph => Collapsed ? "?" : "?";
+    public string HeaderGlyph => Collapsed ? "▸" : "▾";
     private bool selected;
     private string state = "";
     public string GroupId => Group.Id;
@@ -132,14 +132,14 @@ public sealed class ResultRow : INotifyPropertyChanged
     public double ScoreValue => Member.Evidence.Score;
     public double DurationSeconds => Member.File.Media?.Duration ?? -1;
     public long ResolutionPixels => (long)(Member.File.Media?.Width ?? 0) * (Member.File.Media?.Height ?? 0);
-    private string headerSelection = " � 0 selected � 0 B";
+    private string headerSelection = " · 0 selected · 0 B";
     public string HeaderSelection { get => headerSelection; set { if (headerSelection == value) return; headerSelection = value; Changed(nameof(GroupSummary)); } }
     public string GroupSummary => Group.Summary + headerSelection;
     public string Protection => Member.File.IsReference ? "Protected reference" : ReferenceEligible ? "" : "No reference match";
     public string Reason => Member.Evidence.Reason;
-    public string Duration => Member.File.Media is { } m ? Formatting.Duration(m.Duration) : "-";
-    public string Resolution => Member.File.Media is { } m ? $"{m.Width} � {m.Height}" : "-";
-    public string Codecs => Member.File.Media is { } m ? $"{m.VideoCodec} / {m.AudioCodec}" : "-";
+    public string Duration => Member.File.Media is { } m ? Formatting.Duration(m.Duration) : "—";
+    public string Resolution => Member.File.Media is { } m ? $"{m.Width} × {m.Height}" : "—";
+    public string Codecs => Member.File.Media is { } m ? $"{m.VideoCodec} / {m.AudioCodec}" : "—";
     public bool CanSelect => !IsGroupHeader && !Member.File.IsReference && ReferenceEligible && !state.StartsWith("Recycled:", StringComparison.Ordinal) && !state.StartsWith("DeletedPermanently:", StringComparison.Ordinal) && !state.StartsWith("Quarantined:", StringComparison.Ordinal);
     public bool Selected { get => selected; set { if (value && !CanSelect) return; selected = value; Changed(); } }
     public string State { get => state; set { state = value; Changed(); Changed(nameof(CanSelect)); } }

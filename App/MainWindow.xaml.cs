@@ -229,10 +229,10 @@ public partial class MainWindow : Window
         filterText = TextFilter.Text.Trim(); filterKind = KindFilter.SelectedIndex;
         ConfigureGrouping();
         IssuesList.ItemsSource = next.Errors; IssuesTab.Header = $"Issues ({next.Errors.Count:N0})";
-        SummaryText.Text = $"{next.Groups.Count:N0} groups � {rowsByPath.Count:N0} matching videos";
-        OutcomesList.ItemsSource = next.DeletionOutcomes.Select(o => $"{o.State}: {o.Path} - {o.Message}" + (o.AuditWarning == null ? "" : " � " + o.AuditWarning));
+        SummaryText.Text = $"{next.Groups.Count:N0} groups · {rowsByPath.Count:N0} matching videos";
+        OutcomesList.ItemsSource = next.DeletionOutcomes.Select(o => $"{o.State}: {o.Path} — {o.Message}" + (o.AuditWarning == null ? "" : " · " + o.AuditWarning));
         OutcomesTab.Header = $"Deletion outcomes ({next.DeletionOutcomes.Count:N0})";
-        StatusText.Text = next.Cancelled ? "Cancelled - completed work retained" : next.Status == ScanStatus.Failed ? "Scan failed - see Issues" : "Scan complete";
+        StatusText.Text = next.Cancelled ? "Cancelled — completed work retained" : next.Status == ScanStatus.Failed ? "Scan failed — see Issues" : "Scan complete";
         DetailText.Text = $"{next.FileCount:N0} videos discovered. {next.Errors.Count:N0} issues. Name and visual results are candidates for review.";
         UpdateEmptyState(); UpdateSelection(); ExportButton.IsEnabled = !busy;
         BulkSelectButton.IsEnabled = !busy && next.Groups.Count > 0;
@@ -254,7 +254,7 @@ public partial class MainWindow : Window
     {
         if (SelectionText == null) return;
         long size = selectedPaths.Sum(p => rowsByPath.TryGetValue(p, out var values) ? values[0].Member.File.Size : 0);
-        SelectionText.Text = $"{selectedPaths.Count:N0} {(selectedPaths.Count == 1 ? "file" : "files")} selected for deletion � {Formatting.Size(size)}";
+        SelectionText.Text = $"{selectedPaths.Count:N0} {(selectedPaths.Count == 1 ? "file" : "files")} selected for deletion · {Formatting.Size(size)}";
         DeleteButton.IsEnabled = selectedPaths.Count > 0 && !busy;
         if (refreshHeaders) UpdateGroupHeaders(groupHeaders.Keys);
     }
@@ -265,7 +265,7 @@ public partial class MainWindow : Window
             {
                 int count = 0; long bytes = 0;
                 foreach (var member in header.Group.Members) if (selectedPaths.Contains(member.File.Path)) { count++; bytes += member.File.Size; }
-                header.HeaderSelection = $" � {count:N0} selected � {Formatting.Size(bytes)}";
+                header.HeaderSelection = $" · {count:N0} selected · {Formatting.Size(bytes)}";
             }
     }
     private bool FilterRow(object value)
