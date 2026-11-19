@@ -14,7 +14,7 @@
     <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
     <DebugType>embedded</DebugType>
     <PublishTrimmed>false</PublishTrimmed>
-    <Version>3.2.1</Version>
+    <Version>3.3.0</Version>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon Condition="Exists('../assets/mediaforge.ico')">../assets/mediaforge.ico</ApplicationIcon>
   </PropertyGroup>
