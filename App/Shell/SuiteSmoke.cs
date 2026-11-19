@@ -68,6 +68,8 @@ internal static class SuiteSmoke
             ThemeManager.Apply(App.DarkMode);
             var subtitles = shell.OpenTool("forced-subtitles");
             Check(subtitles.FindName("StartButton") is Button { IsEnabled: true }, "Forced Subtitle Generator opens from the launcher");
+            Check(subtitles.FindName("LocalModelBox") is TextBox && subtitles.FindName("DeviceBox") is ComboBox,
+                "Forced Subtitle Generator exposes local model and device selection");
             subtitles.Close();
             var checker = shell.OpenTool("media-integrity");
             Check(ReferenceEquals(checker, shell.OpenTool("MEDIA-INTEGRITY")), "Integrity Checker reuses its open window");

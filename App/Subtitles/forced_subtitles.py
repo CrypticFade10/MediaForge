@@ -150,13 +150,60 @@ def process_video(path, output, args, get_model):
     return True
 
 
+def local_model_path(directory):
+    path = directory.resolve()
+    if not path.is_dir():
+        raise ValueError(f"Local model folder does not exist: {path}")
+    required = ("model.bin", "config.json", "tokenizer.json")
+    missing = [name for name in required if not (path / name).is_file()]
+    if missing:
+        raise ValueError(f"Choose a downloaded CTranslate2 Whisper model folder. Missing: {', '.join(missing)}.")
+    return str(path)
+
+
+def compute_type_for(device):
+    if device == "cpu":
+        return "int8"
+
+    import ctranslate2
+
+    if ctranslate2.get_cuda_device_count() == 0:
+        raise RuntimeError("No NVIDIA CUDA device is available to CTranslate2.")
+    supported = ctranslate2.get_supported_compute_types("cuda")
+    for compute_type in ("float16", "int8_float32", "float32"):
+        if compute_type in supported:
+            return compute_type
+    raise RuntimeError("This NVIDIA device has no supported Whisper compute type.")
+
+
+def load_model(model_source, device, whisper_model, local):
+    try:
+        compute_type = compute_type_for(device)
+        label = "local Whisper model" if local else "Whisper preset"
+        print(f"Loading {label} {model_source} on {device.upper()} ({compute_type}).", flush=True)
+        model = whisper_model(model_source, device=device, compute_type=compute_type,
+                              local_files_only=local)
+    except (RuntimeError, OSError, ValueError) as error:
+        if device == "cuda":
+            raise RuntimeError(
+                f"NVIDIA CUDA model load failed. Check the NVIDIA driver, CUDA/cuDNN libraries "
+                f"and available VRAM. Details: {error}"
+            ) from error
+        raise
+    if not model.model.is_multilingual:
+        raise ValueError("Choose a multilingual Whisper model trained for speech translation.")
+    return model
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("path", type=Path)
     parser.add_argument("--ffmpeg", required=True)
     parser.add_argument("--ffprobe", required=True)
     parser.add_argument("--work-dir", required=True)
-    parser.add_argument("--model", choices=["small", "medium", "large-v3"], default="medium")
+    models = parser.add_mutually_exclusive_group()
+    models.add_argument("--model", choices=["small", "medium", "large-v3"], default="medium")
+    models.add_argument("--model-dir", type=Path)
     parser.add_argument("--device", choices=["cpu", "cuda"], default="cpu")
     parser.add_argument("--audio-track", type=int, default=0)
     parser.add_argument("--confidence", type=float, default=0.65)
@@ -170,14 +217,25 @@ def main():
         print(f"Whisper runtime unavailable. Install it with: python -m pip install faster-whisper==1.2.1\n{error}")
         return 1
 
+    try:
+        source = local_model_path(args.model_dir) if args.model_dir else args.model
+    except (OSError, ValueError) as error:
+        print(error)
+        return 1
+
     model = None
+    model_error = None
 
     def get_model():
-        nonlocal model
+        nonlocal model, model_error
+        if model_error is not None:
+            raise model_error
         if model is None:
-            print(f"Loading Whisper {args.model} on {args.device} (first use may download model weights).", flush=True)
-            model = WhisperModel(args.model, device=args.device,
-                                 compute_type="int8" if args.device == "cpu" else "float16")
+            try:
+                model = load_model(source, args.device, WhisperModel, local=args.model_dir is not None)
+            except Exception as error:
+                model_error = error
+                raise
         return model
 
     root = args.path.resolve()

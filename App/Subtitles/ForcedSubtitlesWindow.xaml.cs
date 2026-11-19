@@ -16,6 +16,7 @@ public partial class ForcedSubtitlesWindow : Window
     private readonly ToolContext context;
     private CancellationTokenSource? cancellation;
     private bool closeAfterRun;
+    private string ModelsDirectory => Path.Combine(context.DataDirectory, "models");
 
     public ForcedSubtitlesWindow(ToolContext context)
     {
@@ -46,6 +47,37 @@ public partial class ForcedSubtitlesWindow : Window
         if (dialog.ShowDialog(this) == true) InputBox.Text = dialog.FolderName;
     }
 
+    private void BrowseModel_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            Directory.CreateDirectory(ModelsDirectory);
+            var dialog = new OpenFolderDialog
+            {
+                Title = "Choose a CTranslate2 Whisper model folder",
+                InitialDirectory = Directory.Exists(LocalModelBox.Text) ? LocalModelBox.Text : ModelsDirectory
+            };
+            if (dialog.ShowDialog(this) == true) LocalModelBox.Text = dialog.FolderName;
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            StatusText.Text = ex.Message;
+        }
+    }
+
+    private void OpenModels_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            Directory.CreateDirectory(ModelsDirectory);
+            Process.Start(new ProcessStartInfo(ModelsDirectory) { UseShellExecute = true })?.Dispose();
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or Win32Exception)
+        {
+            StatusText.Text = ex.Message;
+        }
+    }
+
     private async void Start_Click(object sender, RoutedEventArgs e)
     {
         if (cancellation != null) return;
@@ -58,6 +90,7 @@ public partial class ForcedSubtitlesWindow : Window
             return;
         }
 
+        string localModel = LocalModelBox.Text.Trim().Trim('"');
         string model = (string)((ComboBoxItem)ModelBox.SelectedItem).Content;
         string device = DeviceBox.SelectedIndex == 1 ? "cuda" : "cpu";
         string workDirectory = Path.Combine(context.DataDirectory, "work-" + Guid.NewGuid().ToString("N"));
@@ -91,9 +124,19 @@ public partial class ForcedSubtitlesWindow : Window
             };
             foreach (string argument in new[] { "-X", "utf8", "-u", script, Path.GetFullPath(input),
                 "--ffmpeg", ffmpeg, "--ffprobe", Path.Combine(Path.GetDirectoryName(ffmpeg)!, "ffprobe.exe"),
-                "--work-dir", workDirectory, "--model", model, "--device", device,
+                "--work-dir", workDirectory, "--device", device,
                 "--audio-track", track.ToString(CultureInfo.InvariantCulture) })
                 start.ArgumentList.Add(argument);
+            if (localModel.Length == 0)
+            {
+                start.ArgumentList.Add("--model");
+                start.ArgumentList.Add(model);
+            }
+            else
+            {
+                start.ArgumentList.Add("--model-dir");
+                start.ArgumentList.Add(Path.GetFullPath(localModel));
+            }
 
             using var process = Process.Start(start) ?? throw new IOException("Unable to start Python.");
             using var registration = run.Token.Register(() =>
