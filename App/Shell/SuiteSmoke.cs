@@ -38,7 +38,7 @@ internal static class SuiteSmoke
         try
         {
             await shell.Dispatcher.InvokeAsync(() => { }, DispatcherPriority.ApplicationIdle);
-            Check(registry.Modules.Count == 2 && registry.Find("DUPLICATE-FINDER") != null && registry.Find("media-integrity") != null, "Built-in registration and case-insensitive lookup");
+            Check(registry.Modules.Count == 3 && registry.Find("DUPLICATE-FINDER") != null && registry.Find("media-integrity") != null && registry.Find("forced-subtitles") != null, "Built-in registration and case-insensitive lookup");
             foreach (string id in new[] { "", "../escape", "with space" })
             {
                 bool rejected = false;
@@ -66,6 +66,9 @@ internal static class SuiteSmoke
                 using var file = File.Create(Path.Combine(App.DataDirectory, dark ? "suite-dark.png" : "suite-light.png")); encoder.Save(file);
             }
             ThemeManager.Apply(App.DarkMode);
+            var subtitles = shell.OpenTool("forced-subtitles");
+            Check(subtitles.FindName("StartButton") is Button { IsEnabled: true }, "Forced Subtitle Generator opens from the launcher");
+            subtitles.Close();
             var checker = shell.OpenTool("media-integrity");
             Check(ReferenceEquals(checker, shell.OpenTool("MEDIA-INTEGRITY")), "Integrity Checker reuses its open window");
             var checkerStart = (Button)checker.FindName("StartButton");

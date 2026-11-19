@@ -4,11 +4,15 @@
 
 **Modular Media Management Suite**
 
-Distributed as **one standalone EXE**. Includes Duplicate Finder and Media Integrity Checker; future tools can be added without changing the launcher.
+Distributed as **one standalone EXE**. Includes Duplicate Finder, Media Integrity Checker and Forced Subtitle Generator; future tools can be added without changing the launcher.
 
 Open `dist/MediaForge.exe` on 64-bit Windows. The home screen lists installed tools and supports search and a shared light/dark theme. Open tools run in their own windows in the same application. Opening a tool again activates its existing window; closing it lets you reopen a fresh session. Close tool windows before exiting the launcher so ongoing file operations retain their existing close safeguards.
 
-The EXE includes the .NET runtime, SQLite, FFmpeg and FFprobe. No installation, companion DLLs or plugin folder is needed. Native tools are extracted locally when Duplicate Finder opens.
+The EXE includes the .NET runtime, SQLite, FFmpeg and FFprobe. Duplicate Finder and Media Integrity Checker run with the bundled tools. Forced Subtitle Generator uses a separately installed Python inference runtime.
+
+## Forced Subtitle Generator
+
+Open the module for a video or a folder. It detects foreign-language speech in English audio and combines the translations in an external `.en.forced.srt` beside each video. See the [Forced Subtitle Generator guide](docs/FORCED-SUBTITLES.md) for setup, audio track selection and model settings.
 
 ## Build and extend
 

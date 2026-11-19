@@ -1,0 +1,53 @@
+<Window x:Class="SimilarVideoFinder.App.Subtitles.ForcedSubtitlesWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ Title="Forced Subtitle Generator — MediaForge" Width="820" Height="660" MinWidth="690" MinHeight="550"
+ WindowStartupLocation="CenterScreen" Background="{DynamicResource WindowBackground}">
+ <DockPanel LastChildFill="True">
+  <Border DockPanel.Dock="Top" Background="{DynamicResource HeaderBackground}" Padding="24,18">
+   <StackPanel>
+    <TextBlock Text="Forced Subtitle Generator" Foreground="{DynamicResource HeaderForeground}" FontSize="28" FontWeight="SemiBold"/>
+    <TextBlock Margin="0,6,0,0" Foreground="{DynamicResource HeaderMuted}" TextWrapping="Wrap"
+     Text="Translate foreign-language speech on an English audio track into an English forced SRT."/>
+   </StackPanel>
+  </Border>
+  <StackPanel DockPanel.Dock="Top" Margin="24,16,24,10">
+   <StackPanel x:Name="OptionsPanel">
+    <TextBlock Text="Video or folder (includes subfolders)"/>
+    <DockPanel Margin="0,6,0,12">
+     <Button DockPanel.Dock="Right" Margin="8,0,0,0" Content="Choose folder…" Click="BrowseFolder_Click"/>
+     <Button DockPanel.Dock="Right" Margin="8,0,0,0" Content="Choose video…" Click="BrowseVideo_Click"/>
+     <TextBox x:Name="InputBox"/>
+    </DockPanel>
+    <TextBlock Text="Python executable"/>
+    <TextBox x:Name="PythonBox" Text="python.exe" Margin="0,6,0,6"/>
+    <TextBlock Text="One-time Python setup" Foreground="{DynamicResource MutedBrush}"/>
+    <TextBox Text="python -m pip install faster-whisper==1.2.1" IsReadOnly="True" Margin="0,4,0,12"/>
+    <WrapPanel>
+     <StackPanel Margin="0,0,12,0">
+      <TextBlock Text="Model"/>
+      <ComboBox x:Name="ModelBox" SelectedIndex="1" Width="145" Margin="0,6,0,0">
+       <ComboBoxItem Content="small"/><ComboBoxItem Content="medium"/><ComboBoxItem Content="large-v3"/>
+      </ComboBox>
+     </StackPanel>
+     <StackPanel Margin="0,0,12,0">
+      <TextBlock Text="Device"/>
+      <ComboBox x:Name="DeviceBox" SelectedIndex="0" Width="145" Margin="0,6,0,0">
+       <ComboBoxItem Content="CPU"/><ComboBoxItem Content="NVIDIA CUDA"/>
+      </ComboBox>
+     </StackPanel>
+     <StackPanel>
+      <TextBlock Text="Audio track (0 = automatic)"/>
+      <TextBox x:Name="TrackBox" Text="0" Margin="0,6,0,0" ToolTip="Enter the 1-based audio track number to override automatic English track selection."/>
+     </StackPanel>
+    </WrapPanel>
+   </StackPanel>
+   <StackPanel Orientation="Horizontal" Margin="0,14,0,8">
+    <Button x:Name="StartButton" Content="Generate forced SRT" Click="Start_Click"/>
+    <Button x:Name="CancelButton" Margin="8,0,0,0" Content="Cancel" IsEnabled="False" Click="Cancel_Click"/>
+   </StackPanel>
+   <TextBlock x:Name="StatusText" Text="Outputs are saved beside the videos as .en.forced.srt." TextWrapping="Wrap"/>
+  </StackPanel>
+  <TextBox x:Name="LogBox" Margin="24,0,24,18" IsReadOnly="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+ </DockPanel>
+</Window>

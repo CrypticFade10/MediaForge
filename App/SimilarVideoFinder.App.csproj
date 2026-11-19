@@ -23,6 +23,7 @@
     <ProjectReference Include="../Core/SimilarVideoFinder.Core.csproj" />
     <ProjectReference Include="../Tooling/MediaForge.Tooling.csproj" />
     <ProjectReference Include="../Integrity/MediaForge.Integrity.csproj" />
+    <EmbeddedResource Include="Subtitles/forced_subtitles.py" LogicalName="Tools.forced_subtitles.py" />
     <EmbeddedResource Include="../vendor/ffmpeg.exe" LogicalName="Tools.ffmpeg.exe" />
     <EmbeddedResource Include="../vendor/ffprobe.exe" LogicalName="Tools.ffprobe.exe" />
     <EmbeddedResource Include="../vendor/tool-checksums.json" LogicalName="Tools.checksums.json" />
