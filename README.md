@@ -14,6 +14,8 @@ The EXE includes the .NET runtime, SQLite, FFmpeg and FFprobe. Duplicate Finder 
 
 Open the module for a video or a folder. It detects foreign-language speech in English audio and combines the translations in an external `.en.forced.srt` beside each video. See the [Forced Subtitle Generator guide](docs/FORCED-SUBTITLES.md) for setup, audio track selection and model settings.
 
+Select **Download selected model** inside the module, or let **Generate forced SRT** download a missing preset automatically. Downloads show progress and support cancellation. Verified models are stored in `MediaForge-Data/models` beside the EXE and reused offline; temporary subtitle work uses `MediaForge-Data/work`. You can choose a different model storage folder or continue using your own local CTranslate2 model. Python/faster-whisper is still required for inference, but model downloading is built into the EXE.
+
 ## Build and extend
 
 See [Media Integrity Checker](docs/MEDIA-INTEGRITY.md) for recursive media health checks, optional GPU decoding, CPU retries, result statuses and report exports.

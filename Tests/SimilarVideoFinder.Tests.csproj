@@ -1,4 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
- <ItemGroup><ProjectReference Include="../Core/SimilarVideoFinder.Core.csproj"/><ProjectReference Include="../Integrity/MediaForge.Integrity.csproj"/></ItemGroup>
+ <ItemGroup><ProjectReference Include="../Core/SimilarVideoFinder.Core.csproj"/><ProjectReference Include="../Integrity/MediaForge.Integrity.csproj"/><ProjectReference Include="../SubtitleModels/MediaForge.SubtitleModels.csproj"/></ItemGroup>
 </Project>

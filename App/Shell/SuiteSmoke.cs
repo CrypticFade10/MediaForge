@@ -70,6 +70,19 @@ internal static class SuiteSmoke
             Check(subtitles.FindName("StartButton") is Button { IsEnabled: true }, "Forced Subtitle Generator opens from the launcher");
             Check(subtitles.FindName("LocalModelBox") is TextBox && subtitles.FindName("DeviceBox") is ComboBox,
                 "Forced Subtitle Generator exposes local model and device selection");
+            Check(subtitles.FindName("DownloadModelButton") is Button { IsEnabled: true }
+                && subtitles.FindName("ModelStorageBox") is TextBox storage
+                && storage.Text == MediaForge.SubtitleModels.WhisperModels.DefaultModelsDirectory(AppContext.BaseDirectory),
+                "Subtitle model download controls use portable storage beside the executable");
+            foreach (bool dark in new[] { false, true })
+            {
+                ThemeManager.Apply(dark); subtitles.UpdateLayout();
+                var content = (FrameworkElement)subtitles.Content;
+                var picture = new RenderTargetBitmap((int)content.ActualWidth, (int)content.ActualHeight, 96, 96, PixelFormats.Pbgra32); picture.Render(content);
+                var encoder = new PngBitmapEncoder(); encoder.Frames.Add(BitmapFrame.Create(picture));
+                using var file = File.Create(Path.Combine(App.DataDirectory, dark ? "subtitle-models-dark.png" : "subtitle-models-light.png")); encoder.Save(file);
+            }
+            ThemeManager.Apply(App.DarkMode);
             subtitles.Close();
             var checker = shell.OpenTool("media-integrity");
             Check(ReferenceEquals(checker, shell.OpenTool("MEDIA-INTEGRITY")), "Integrity Checker reuses its open window");

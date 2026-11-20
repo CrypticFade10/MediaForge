@@ -28,6 +28,8 @@ internal static partial class Program
         try
         {
             int nas = Array.IndexOf(args, "--nas-root");
+            if (args.Contains("--model-downloads")) { await ModelDownloadChecks(run); Console.WriteLine($"All {passed} model download checks passed."); return 0; }
+            if (args.Contains("--model-download-live")) { await ModelDownloadLiveChecks(); Console.WriteLine($"All {passed} live model checks passed."); return 0; }
             if (args.Contains("--integrity")) { await IntegrityChecks(run, workspace); Console.WriteLine($"All {passed} integrity checks passed."); return 0; }
             if (nas >= 0) { await NasChecks(args[nas + 1], workspace); return 0; }
             if (args.Contains("--v3")) { await V3Checks(run); Console.WriteLine($"All {passed} V3 checks passed."); return 0; }

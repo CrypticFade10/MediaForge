@@ -33,6 +33,9 @@ jobs:
           $app = Start-Process -FilePath './dist/MediaForge.exe' -ArgumentList @('--suite-smoke', '--data-dir', "`"$testData`"") -PassThru -WindowStyle Hidden
           if (-not $app.WaitForExit(120000)) { $app.Kill(); throw 'Launcher check timed out.' }
           if ($app.ExitCode -ne 0) { Get-Content (Join-Path $testData 'suite-smoke.json'); throw 'Launcher check failed.' }
+      - name: Check live Whisper model metadata and small downloads
+        shell: pwsh
+        run: ./build-tools/dotnet/dotnet.exe run --project ./Tests/SimilarVideoFinder.Tests.csproj --no-build -- . --model-download-live
       - name: Create checksum
         shell: pwsh
         run: |

@@ -1,3 +1,17 @@
+# MediaForge 3.3.1 model download validation - 20 November 2026
+
+- Added in-application downloads for Small, Medium and Large v3, plus automatic installation before generation if a preset is absent.
+- Portable models are stored in MediaForge-Data/models beside the EXE; temporary subtitle work uses MediaForge-Data/work. Custom local model selection is preserved.
+- 23 deterministic downloader checks passed: full file sets, revision pinning, published file hashes, corrupt/truncated data, HTTP failures, cancellation cleanup, repair without overwriting, offline discovery and portability after moving folders.
+- Existing regression suites passed: 126 core checks (two junction-fixture checks skipped in this environment), 26 V3 checks and 30 integrity checks.
+- Published single-EXE UI smoke: all 21 checks passed. The new controls and default portable folder were checked; light/dark renders were visually inspected.
+- Builds completed with zero compiler warnings and errors with local NuGet auditing disabled for this offline environment.
+- Real Hugging Face requests cannot be made from this local environment because its DNS/network access is restricted. The release workflow separately checks live metadata and a small revision-pinned config download for each preset. Full multi-GB model weights and live subtitle inference were not downloaded or benchmarked as part of this local validation.
+- Evidence: model-release-checks.log, model-publish.log and model-smoke/suite-smoke.json in the isolated model-download working copy. GitHub Actions records independent build/live checks and release status.
+
+Earlier release validation follows.
+
+---
 # MediaForge 3.2 validation - 15 November 2026
 
 Added Media Integrity Checker as the second registered module, with an independent Integrity engine project and shared bundled FFmpeg tools.

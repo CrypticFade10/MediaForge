@@ -4,4 +4,5 @@
   <Project Path="Tests/SimilarVideoFinder.Tests.csproj" />
   <Project Path="Tooling/MediaForge.Tooling.csproj" />
   <Project Path="Integrity/MediaForge.Integrity.csproj" />
+  <Project Path="SubtitleModels/MediaForge.SubtitleModels.csproj" />
 </Solution>
